@@ -119,6 +119,14 @@ function openStop(id) {
     }
   }
 
+  // Street View — hide if streetview:false
+  const allMedia = document.querySelectorAll('#detail .det-media');
+  allMedia.forEach(m => {
+    if (m.querySelector('[onclick="openStreetView()"]')) {
+      m.style.display = s.streetview === false ? 'none' : '';
+    }
+  });
+
   // Audio — language specific
   document.getElementById('a-caption').textContent = s[lang].audio;
   const audioEl = document.getElementById('audio-el');
