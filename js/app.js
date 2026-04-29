@@ -68,6 +68,7 @@ function openStop(id) {
   const photos = s.photos && s.photos.length > 0 ? s.photos : [];
   const captions = s.captions || [];
   if (photos.length > 0) {
+    const firstCaption = captions[0] || '';
     pw.innerHTML = `
       <div class="gallery-wrap">
         <img class="det-photo" id="gallery-img" src="${photos[0]}" alt="${s[lang].title}"/>
@@ -77,7 +78,8 @@ function openStop(id) {
           <button class="gallery-arrow gallery-next" onclick="galleryNav(1)" id="gallery-next">›</button>
           <div class="gallery-counter" id="gallery-counter">1 / ${photos.length}</div>
         ` : ''}
-      </div>`;
+      </div>
+      <div class="gallery-caption" id="gallery-caption" style="display:${firstCaption ? '' : 'none'}">${firstCaption}</div>`;
     window._galleryPhotos = photos;
     window._galleryIndex = 0;
     window._galleryCaptions = captions;
