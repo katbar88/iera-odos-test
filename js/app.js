@@ -153,8 +153,8 @@ function openStop(id) {
     // strip the plain-text "Πηγή:…" line that lives in desc (everything before it)
     const mainText = d.desc.split('\n\nΠηγή:')[0];
     descHtml  = mainText;
-    descHtml += `<br><br><em style="color:${subColor};font-style:italic;font-size:0.88em;">Πηγή: ${d.source}</em>`;
-    if (d.desc_extra) descHtml += '<br><br>' + d.desc_extra;
+    descHtml += `<br><em style="color:${subColor};font-style:italic;font-size:0.88em;">Πηγή: ${d.source}</em>`;
+    if (d.desc_extra) descHtml += '<br>' + d.desc_extra;
   } else {
     descHtml = d.desc;
   }
