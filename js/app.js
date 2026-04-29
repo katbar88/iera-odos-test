@@ -254,8 +254,12 @@ function navStop(dir) {
 function openStreetView() {
   if (!activeStop) return;
   const s = stops.find(x => x.id === activeStop);
-  const [lat, lng] = s.coords;
-  window.open(`https://www.google.com/maps/@${lat},${lng},3a,80y,0h,90t/data=!3m6!1e1!3m4!1sAF1QipN!2e10!7i13312!8i6656`, '_blank');
+  if (s.maps_url) {
+    window.open(s.maps_url, '_blank');
+  } else {
+    const [lat, lng] = s.coords;
+    window.open(`https://www.google.com/maps/@${lat},${lng},3a,80y,0h,90t/data=!3m6!1e1!3m4!1sAF1QipN!2e10!7i13312!8i6656`, '_blank');
+  }
 }
 
 /* ── LANGUAGE ───────────────────────────── */
