@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin Panel — Ιερά Οδός</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{--bg:#f0ede4;--panel:#e8e3d5;--accent:#6b5a28;--olive:#3d6b55;--red:#a04030;--text:#1e2014;--text2:#4a4e38;--text3:#8a9070;--border:#c4c9b4;}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+    
+    #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:20px;}
+    #login-screen h1{font-size:24px;color:var(--accent);}
+    .btn-google{padding:12px 28px;background:var(--accent);color:#f5f0e6;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;}
+    
+    #admin-panel{display:none;max-width:900px;margin:0 auto;padding:30px 20px;}
+    
+    .admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+    .admin-title{font-size:22px;font-weight:700;color:var(--accent);}
+    .btn-logout{padding:6px 14px;background:transparent;border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:12px;color:var(--text3);}
+    
+    .tabs{display:flex;gap:4px;margin-bottom:24px;}
+    .tab{padding:8px 18px;border-radius:4px;border:1px solid var(--border);background:var(--panel);cursor:pointer;font-size:12px;font-weight:500;color:var(--text2);transition:all .2s;}
+    .tab.active{background:var(--accent);color:#f5f0e6;border-color:var(--accent);}
+    .tab-badge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--red);color:#fff;font-size:10px;margin-left:6px;}
+    
+    .section{display:none;}
+    .section.active{display:block;}
+    
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px;}
+    .card-meta{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+    .card-user{font-size:12px;font-weight:600;color:var(--text);}
+    .card-date{font-size:11px;color:var(--text3);margin-left:auto;}
+    .card-stop{font-size:11px;color:var(--accent);background:rgba(107,90,40,.1);padding:2px 8px;border-radius:10px;}
+    .card-text{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px;}
+    .card-photo{width:100%;max-height:200px;object-fit:cover;border-radius:4px;margin-bottom:12px;}
+    .card-coords{font-size:11px;color:var(--text3);margin-bottom:12px;}
+    .card-actions{display:flex;gap:8px;}
+    .btn-approve{padding:6px 16px;background:var(--olive);color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;}
+    .btn-reject{padding:6px 16px;background:var(--red);color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;font-family:'Plus Jakarta Sans',sans-serif;}
+    .empty{text-align:center;padding:40px;color:var(--text3);font-size:14px;}
+  </style>
+</head>
+<body>
+
+<div id="login-screen">
+  <h1>🔐 Admin Panel</h1>
+  <p style="color:#8a9070;font-size:13px;">Ιερά Οδός — Διαχείριση περιεχομένου</p>
+  <button class="btn-google" onclick="adminLogin()">Σύνδεση με Google</button>
+  <p id="login-error" style="color:#a04030;font-size:12px;"></p>
+</div>
+
+<div id="admin-panel">
+  <div class="admin-header">
+    <div class="admin-title">⚙️ Admin Panel — Ιερά Οδός</div>
+    <button class="btn-logout" onclick="adminLogout()">Αποσύνδεση</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('comments')">
+      Σχόλια <span class="tab-badge" id="badge-comments">0</span>
+    </button>
+    <button class="tab" onclick="showTab('photos')">
+      Φωτογραφίες <span class="tab-badge" id="badge-photos">0</span>
+    </button>
+    <button class="tab" onclick="showTab('stops')">
+      Νέα Σημεία <span class="tab-badge" id="badge-stops">0</span>
+    </button>
+  </div>
+
+  <div id="sec-comments" class="section active"><div class="empty">Φόρτωση...</div></div>
+  <div id="sec-photos"   class="section"><div class="empty">Φόρτωση...</div></div>
+  <div id="sec-stops"    class="section"><div class="empty">Φόρτωση...</div></div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, query, where, onSnapshot, doc, updateDoc, deleteDoc }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyC6FMPgAusyAnCTXarVt-qqMcDFpakOk0M",
+  authDomain:        "iera-odos.firebaseapp.com",
+  projectId:         "iera-odos",
+  storageBucket:     "iera-odos.firebasestorage.app",
+  messagingSenderId: "951270422795",
+  appId:             "1:951270422795:web:083a8d6d210f2931f70a0e",
+};
+
+const ADMIN_EMAIL = 'kbartsoka@gmail.com'; // ← ΑΛΛΑΞΤΕ ΜΕ ΤΟ EMAIL ΣΑΣ
+
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+onAuthStateChanged(auth, user => {
+  if (user && user.email === ADMIN_EMAIL) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display  = 'block';
+    loadPending();
+  } else if (user) {
+    signOut(auth);
+    document.getElementById('login-error').textContent = 'Δεν έχετε δικαίωμα πρόσβασης.';
+  }
+});
+
+window.adminLogin  = () => signInWithPopup(auth, provider);
+window.adminLogout = () => { signOut(auth); location.reload(); };
+
+window.showTab = (tab) => {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['comments','photos','stops'][i]===tab));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(`sec-${tab}`).classList.add('active');
+};
+
+function loadPending() {
+  // Comments
+  onSnapshot(query(collection(db,'comments'), where('status','==','pending')), snap => {
+    document.getElementById('badge-comments').textContent = snap.size;
+    const sec = document.getElementById('sec-comments');
+    if (!snap.size) { sec.innerHTML='<div class="empty">Δεν υπάρχουν εκκρεμή σχόλια 🎉</div>'; return; }
+    sec.innerHTML = snap.docs.map(d => {
+      const c = d.data();
+      return `<div class="card">
+        <div class="card-meta">
+          <div class="card-user">${c.userName}</div>
+          <div class="card-stop">Στάση ${c.stopId}</div>
+          <div class="card-date">${c.createdAt?.toDate().toLocaleDateString('el-GR')||''}</div>
+        </div>
+        <div class="card-text">${c.text}</div>
+        <div class="card-actions">
+          <button class="btn-approve" onclick="approve('comments','${d.id}')">✓ Έγκριση</button>
+          <button class="btn-reject"  onclick="reject('comments','${d.id}')">✕ Απόρριψη</button>
+        </div>
+      </div>`;
+    }).join('');
+  });
+
+  // Photos
+  onSnapshot(query(collection(db,'user_photos'), where('status','==','pending')), snap => {
+    document.getElementById('badge-photos').textContent = snap.size;
+    const sec = document.getElementById('sec-photos');
+    if (!snap.size) { sec.innerHTML='<div class="empty">Δεν υπάρχουν εκκρεμείς φωτογραφίες 🎉</div>'; return; }
+    sec.innerHTML = snap.docs.map(d => {
+      const p = d.data();
+      return `<div class="card">
+        <div class="card-meta">
+          <div class="card-user">${p.userName}</div>
+          <div class="card-stop">Στάση ${p.stopId}</div>
+          <div class="card-date">${p.createdAt?.toDate().toLocaleDateString('el-GR')||''}</div>
+        </div>
+        <img class="card-photo" src="${p.url}" alt="">
+        ${p.caption ? `<div class="card-text">${p.caption}</div>` : ''}
+        <div class="card-actions">
+          <button class="btn-approve" onclick="approve('user_photos','${d.id}')">✓ Έγκριση</button>
+          <button class="btn-reject"  onclick="reject('user_photos','${d.id}')">✕ Απόρριψη</button>
+        </div>
+      </div>`;
+    }).join('');
+  });
+
+  // User stops
+  onSnapshot(query(collection(db,'user_stops'), where('status','==','pending')), snap => {
+    document.getElementById('badge-stops').textContent = snap.size;
+    const sec = document.getElementById('sec-stops');
+    if (!snap.size) { sec.innerHTML='<div class="empty">Δεν υπάρχουν εκκρεμή σημεία 🎉</div>'; return; }
+    sec.innerHTML = snap.docs.map(d => {
+      const s = d.data();
+      return `<div class="card">
+        <div class="card-meta">
+          <div class="card-user">${s.userName}</div>
+          <div class="card-date">${s.createdAt?.toDate().toLocaleDateString('el-GR')||''}</div>
+        </div>
+        <div class="card-text"><strong>${s.title}</strong>${s.subtitle ? ' — '+s.subtitle : ''}</div>
+        ${s.description ? `<div class="card-text">${s.description}</div>` : ''}
+        <div class="card-coords">📍 ${s.lat}, ${s.lng}</div>
+        <div class="card-actions">
+          <button class="btn-approve" onclick="approve('user_stops','${d.id}')">✓ Έγκριση</button>
+          <button class="btn-reject"  onclick="reject('user_stops','${d.id}')">✕ Απόρριψη</button>
+        </div>
+      </div>`;
+    }).join('');
+  });
+}
+
+window.approve = (col, id) => updateDoc(doc(db, col, id), { status:'approved' });
+window.reject  = (col, id) => deleteDoc(doc(db, col, id));
+</script>
+</body>
+</html>

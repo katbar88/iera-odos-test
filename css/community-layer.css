@@ -1,0 +1,217 @@
+/* community-layer.css — Community stops layer */
+
+/* ── COMMUNITY BAR ───────────────────────── */
+#community-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 282px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 500;
+}
+
+/* Shared style for both buttons */
+#community-toggle,
+#add-stop-btn {
+  background: #888880;
+  border: 1.5px solid #e0c050;
+  border-radius: 4px;
+  padding: 6px 14px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: 'Corbel', 'Barlow', sans-serif;
+  letter-spacing: .08em;
+  color: var(--panel);
+  transition: all .2s;
+  user-select: none;
+  white-space: nowrap;
+  font-weight: 600;
+}
+#community-toggle:hover,
+#add-stop-btn:hover { background: #e0c050; color: var(--panel); border-color: #e0c050; }
+#community-toggle.active { background: #888880; border-color: #e0c050; color: var(--panel); }
+.toggle-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--text3); flex-shrink: 0; transition: background .2s;
+}
+#community-toggle.active .toggle-dot { background: var(--olive); }
+#add-stop-btn.adding { background: rgba(160,64,48,.1); border-color: #a04030; color: #a04030; }
+
+/* ── COMMUNITY MARKERS ───────────────────── */
+.cmk-wrap {
+  width: 34px; height: 34px;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: transform .2s;
+}
+.cmk-wrap:hover { transform: scale(1.12); }
+.cmk-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 1.5px solid var(--olive); opacity: .4; transition: opacity .2s;
+}
+.cmk-wrap:hover .cmk-ring { opacity: 1; }
+.cmk-core {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(122,140,90,.18); border: 1.5px solid var(--olive);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  transition: all .2s;
+}
+.cmk-core svg { width: 11px; height: 11px; fill: var(--olive); transition: fill .2s; }
+.cmk-wrap:hover .cmk-core { background: var(--olive); }
+.cmk-wrap:hover .cmk-core svg { fill: #f5f0e6; }
+
+/* ── POPUP ───────────────────────────────── */
+.cmk-popup {
+  min-width: 220px; max-width: 260px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,.14);
+}
+.cmk-popup img {
+  width: 100%; height: 130px; object-fit: cover; display: block;
+}
+.cmk-popup-body { padding: 12px 14px; }
+.cmk-popup-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--olive3); color: var(--olive);
+  font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 10px; margin-bottom: 7px;
+}
+.cmk-popup-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--olive); }
+.cmk-popup-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; font-family: 'Playfair Display', serif; }
+.cmk-popup-desc { font-size: 12px; line-height: 1.6; color: var(--text2); margin-bottom: 8px; }
+.cmk-popup-meta { font-size: 10px; color: var(--text3); display: flex; align-items: center; gap: 6px; }
+.cmk-popup-avatar {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--olive3); border: 1px solid var(--olive);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: var(--olive); overflow: hidden; flex-shrink: 0;
+}
+
+/* ── ADD FORM MODAL ──────────────────────── */
+#add-stop-modal {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(20,24,16,.55); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+#add-stop-modal.open { opacity: 1; pointer-events: all; }
+#add-stop-box {
+  width: 360px; background: var(--panel);
+  border: 1px solid var(--border); border-radius: 10px;
+  overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  transform: scale(.96); transition: transform .3s;
+}
+#add-stop-modal.open #add-stop-box { transform: scale(1); }
+
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+}
+.modal-title { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--text); }
+.modal-close {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(180,185,165,.4); border: 1px solid var(--border);
+  color: var(--text2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; transition: all .2s; line-height: 1;
+}
+.modal-close:hover { background: var(--accent); color: #f5f0e6; }
+
+.modal-body { padding: 16px 18px; max-height: 70vh; overflow-y: auto; }
+.modal-body::-webkit-scrollbar { width: 2px; }
+.modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.modal-coords {
+  font-size: 10px; color: var(--olive);
+  background: var(--olive3); padding: 6px 10px;
+  border-radius: 4px; margin-bottom: 12px; letter-spacing: .05em;
+}
+
+.form-group { margin-bottom: 12px; }
+.form-group label {
+  display: block; font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 5px;
+}
+.form-group input, .form-group textarea {
+  width: 100%; padding: 8px 11px;
+  border: 1px solid var(--border); border-radius: 5px;
+  background: var(--panel2); color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px;
+  outline: none; transition: border-color .2s;
+}
+.form-group input:focus, .form-group textarea:focus { border-color: var(--olive); }
+.form-group textarea { height: 80px; resize: none; line-height: 1.6; }
+
+/* Photo upload */
+.photo-upload-area {
+  border: 1px dashed var(--border);
+  border-radius: 5px; padding: 16px;
+  text-align: center; cursor: pointer;
+  transition: border-color .2s; position: relative;
+}
+.photo-upload-area:hover { border-color: var(--olive); }
+.photo-upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.photo-upload-icon { font-size: 24px; margin-bottom: 6px; opacity: .5; }
+.photo-upload-text { font-size: 11px; color: var(--text3); }
+.photo-preview {
+  width: 100%; height: 120px; object-fit: cover;
+  border-radius: 5px; display: none; margin-bottom: 8px;
+}
+.photo-remove {
+  font-size: 10px; color: var(--text3); cursor: pointer;
+  text-align: center; margin-bottom: 8px; display: none;
+}
+.photo-remove:hover { color: var(--accent); }
+
+.modal-footer {
+  display: flex; gap: 8px; padding: 12px 18px;
+  border-top: 1px solid var(--border);
+}
+.btn-modal-cancel {
+  padding: 8px 16px; border-radius: 4px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text2); cursor: pointer; font-size: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.btn-modal-submit {
+  flex: 1; padding: 8px 16px; border-radius: 4px;
+  border: none; background: var(--olive); color: #f5f0e6;
+  cursor: pointer; font-size: 12px; font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif; transition: background .2s;
+}
+.btn-modal-submit:hover { background: var(--olive2); }
+.btn-modal-submit:disabled { opacity: .5; pointer-events: none; }
+
+/* Hint banner */
+#add-hint {
+  position: fixed; top: 62px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,.7); color: #fff;
+  font-size: 11px; padding: 7px 18px; border-radius: 20px;
+  z-index: 600; white-space: nowrap; pointer-events: none;
+  display: none;
+}
+
+/* Auth bar in detail panel */
+#auth-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; border-top: 1px solid var(--border);
+  background: var(--panel2); flex-shrink: 0;
+}
+#auth-info { font-size: 11px; color: var(--text2); flex: 1; display: none; }
+#auth-btn {
+  padding: 6px 14px; border-radius: 4px;
+  border: 1px solid var(--border); background: var(--panel);
+  color: var(--text2); cursor: pointer; font-size: 11px;
+  font-family: 'Plus Jakarta Sans', sans-serif; transition: all .2s;
+  white-space: nowrap;
+}
+#auth-btn:hover { background: var(--accent); color: #f5f0e6; border-color: var(--accent); }

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Ιερά Οδός — Sacred Way</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/community.css"/>
+  <link rel="stylesheet" href="css/community-layer.css"/>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="header">
+    <div class="hd-logo">
+      <div class="hd-icon">IO</div>
+      <div>
+        <div class="hd-title">Ιερά Οδός</div>
+        <div class="hd-sub">Sacred Way · Interactive Tour</div>
+      </div>
+    </div>
+    <div class="hd-controls">
+      <div class="tile-selector">
+        <select id="tile-select" onchange="changeTile(this.value)">
+          <option value="carto" data-el="Σκοτεινός" data-en="Dark">Σκοτεινός</option>
+          <option value="topo" data-el="Σκοτεινός χωρίς ετικέτες" data-en="Dark (no labels)">Σκοτεινός χωρίς ετικέτες</option>
+          <option value="osm" data-el="OpenStreetMap" data-en="OpenStreetMap">OpenStreetMap</option>
+          <option value="satellite" data-el="Δορυφόρος" data-en="Satellite">Δορυφόρος</option>
+        </select>
+      </div>
+      <div class="lang-toggle">
+        <button id="btn-el" class="lang-btn active" onclick="setLang('el')">ΕΛ</button>
+        <button id="btn-en" class="lang-btn" onclick="setLang('en')">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- APP -->
+  <div id="app">
+
+    <!-- SIDEBAR -->
+    <div id="sidebar">
+      <div id="route-tabs"></div>
+      <div class="sb-info">
+        <div class="sb-route-name" id="sb-route-name"></div>
+        <div class="sb-route-sub" id="sb-route-sub"></div>
+      </div>
+      <div id="stops-list"></div>
+    </div>
+
+    <!-- Resize handle -->
+    <div id="sb-resize"></div>
+
+    <!-- MAP -->
+    <div id="map"></div>
+
+    <!-- Detail resize handle -->
+    <div id="det-resize"></div>
+
+    <!-- DETAIL PANEL -->
+    <div id="detail">
+
+      <!-- Photo gallery -->
+      <div id="det-photo-wrap"></div>
+
+      <!-- Close button over photo -->
+      <button class="det-close" onclick="closeDetail()">✕</button>
+
+      <!-- Badge -->
+      <div class="det-badge-row">
+        <div class="det-badge">
+          <div class="det-num" id="det-num"></div>
+          <div class="det-badge-txt" id="det-badge-txt"></div>
+        </div>
+      </div>
+
+      <!-- Scrollable area: body + media -->
+      <div class="det-media-wrap">
+
+      <!-- Body -->
+      <div class="det-body">
+        <div class="det-title" id="det-title"></div>
+        <div class="det-sub" id="det-sub"></div>
+        <div class="det-divider"></div>
+        <div class="det-desc" id="det-desc"></div>
+      </div>
+
+      <!-- Audio player -->
+      <div class="det-media" id="sec-audio">
+        <div class="det-media-lbl" data-key="audio">Ήχος</div>
+        <div class="a-player">
+          <button class="a-play" onclick="togglePlay(this)">
+            <svg width="11" height="13" viewBox="0 0 11 13"><path d="M0 0L11 6.5L0 13Z"/></svg>
+          </button>
+          <div class="a-info">
+            <div class="a-caption" id="a-caption"></div>
+            <div class="a-bar"><div class="a-fill" id="a-fill"></div></div>
+            <div class="a-time" id="a-time">0:00 / 0:00</div>
+          </div>
+        </div>
+        <audio id="audio-el" preload="none"></audio>
+      </div>
+
+      <!-- Video -->
+      <div class="det-media" id="sec-video" style="display:none"></div>
+
+      <!-- Εικονική Περιήγηση ΕΦΑΔΑ -->
+      <div class="det-media" id="sec-panorama" style="display:none">
+        <div class="det-media-lbl">Εικονική Περιήγηση</div>
+        <a href="https://www.efada.gr/Iera-Odos/Index.htm" target="_blank" class="sv-btn" style="text-decoration:none">
+          <div class="sv-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 2a10 10 0 1 0 10 10"/>
+              <path d="M12 2c-2.8 2.8-4 6-4 10s1.2 7.2 4 10"/>
+              <path d="M2 12h20"/>
+            </svg>
+          </div>
+          <div class="sv-btn-txt">
+            <div class="sv-btn-title" id="pan-btn-title">Εικονική Περιήγηση (ΕΦΑΔΑ)</div>
+            <div class="sv-btn-sub" id="pan-btn-sub">360° πανόραμα του αρχαιολογικού χώρου ↗</div>
+          </div>
+          <div class="sv-btn-arrow">›</div>
+        </a>
+      </div>
+
+      <!-- Street View -->
+      <div class="det-media">
+        <div class="det-media-lbl">Street View</div>
+        <button class="sv-btn" onclick="openStreetView()">
+          <div class="sv-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="8" r="3"/>
+              <path d="M6 18c0-3.3 2.7-6 6-6s6 2.7 6 6"/>
+            </svg>
+          </div>
+          <div class="sv-btn-txt">
+            <div class="sv-btn-title" id="sv-btn-title">Εξερεύνηση Street View</div>
+            <div class="sv-btn-sub" id="sv-btn-sub">Άνοιγμα στο Google Maps ↗</div>
+          </div>
+          <div class="sv-btn-arrow">›</div>
+        </button>
+      </div>
+
+      </div><!-- /det-media-wrap -->
+
+      <!-- Nav -->
+      <div class="det-nav">
+        <button class="det-nav-btn" id="btn-prev" onclick="navStop(-1)">← <span id="lbl-prev">Προηγούμενο</span></button>
+        <span class="nav-pos" id="nav-pos"></span>
+        <button class="det-nav-btn" id="btn-next" onclick="navStop(1)"><span id="lbl-next">Επόμενο</span> →</button>
+      </div>
+
+    </div><!-- /detail -->
+
+  </div><!-- /app -->
+
+  <!-- Legend -->
+  <div id="legend">
+    <div class="leg-item"><div class="leg-dot"></div><span id="lbl-leg2">Στάση</span></div>
+  </div>
+
+  <!-- Community bar -->
+  <div id="community-bar">
+    <div id="community-toggle" class="active">
+      <div class="toggle-dot"></div>Σημεία κοινότητας
+    </div>
+    <button id="add-stop-btn">+ Προσθήκη</button>
+  </div>
+
+  <!-- Hint -->
+  <div id="add-hint">Κάντε κλικ στον χάρτη για να τοποθετήσετε το σημείο</div>
+
+  <!-- Mobile toggle -->
+  <button id="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+  <!-- Street View Modal -->
+  <div id="sv-modal" style="display:none;position:fixed;inset:0;z-index:3000;background:rgba(20,24,16,.7);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+    <div style="width:90vw;max-width:960px;height:80vh;background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--border);">
+        <div style="font-family:'Playfair Display',serif;font-size:17px;color:var(--text);" id="sv-stop-title"></div>
+        <button onclick="closeStreetView()" style="width:28px;height:28px;border-radius:50%;background:rgba(180,185,165,.5);border:1px solid var(--border);color:var(--text2);cursor:pointer;font-size:13px;">✕</button>
+      </div>
+      <iframe id="sv-frame" style="flex:1;border:none;width:100%;" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+
+  <!-- Panorama Modal (unused - opens in new tab) -->
+  <div id="pan-modal" style="display:none"></div>
+  <iframe id="pan-frame" style="display:none"></iframe>
+
+  <!-- Leaflet popup style -->
+  <style>
+    .leaflet-popup-content-wrapper{padding:0!important;border-radius:8px!important;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.14)!important;border:1px solid var(--border)!important}
+    .leaflet-popup-content{margin:0!important}
+    .leaflet-popup-tip-container{display:none}
+    .cmk-popup-wrapper .leaflet-popup-content-wrapper{background:var(--panel)!important}
+  </style>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+
+  <script type="module">
+    import { initCommunityLayer } from './js/community-layer.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => { initCommunityLayer(); }, 800);
+    });
+  </script>
+
+  <script>
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      const btn = document.getElementById('sidebar-toggle');
+      if (!sb) return;
+      sb.classList.toggle('expanded');
+      btn.textContent = sb.classList.contains('expanded') ? '✕' : '☰';
+    }
+  </script>
+</body>
+</html>

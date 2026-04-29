@@ -1,0 +1,136 @@
+/* community.css — Στυλ για το community section */
+
+/* ── AUTH BAR ──────────────────────────────── */
+#auth-bar {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 26px; border-top: 1px solid var(--border);
+  background: var(--panel2); flex-shrink: 0;
+}
+#auth-info { font-size: 11px; color: var(--text2); flex: 1; }
+#auth-btn {
+  padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border);
+  background: var(--panel); color: var(--text2); cursor: pointer;
+  font-size: 11px; font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all .2s; white-space: nowrap;
+}
+#auth-btn:hover { background: var(--accent); color: #f5f0e6; border-color: var(--accent); }
+
+/* ── COMMUNITY SECTION ─────────────────────── */
+.community-section { padding: 0 26px 20px; }
+
+.community-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.community-title {
+  font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--text3); display: flex; align-items: center; gap: 8px;
+}
+.community-title::before { content: ''; display: block; width: 16px; height: 1px; background: var(--olive); }
+
+.add-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px; border-radius: 4px;
+  background: var(--accentbg); border: 1px solid var(--accent);
+  color: var(--accent); cursor: pointer; font-size: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif; transition: all .2s;
+}
+.add-btn:hover { background: var(--accent); color: #f5f0e6; }
+
+/* ── COMMENTS ──────────────────────────────── */
+.comments-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+
+.comment-card {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 12px 14px;
+}
+.comment-meta {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
+}
+.comment-avatar {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--olive3); border: 1px solid var(--olive);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--olive); overflow: hidden; flex-shrink: 0;
+}
+.comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.comment-name { font-size: 11px; font-weight: 600; color: var(--text); }
+.comment-date { font-size: 10px; color: var(--text3); margin-left: auto; }
+.comment-text { font-size: 13px; line-height: 1.7; color: var(--text2); }
+
+/* ── USER PHOTOS ───────────────────────────── */
+.photos-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-bottom: 10px;
+}
+.photo-card { position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 4/3; }
+.photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.6), transparent);
+  padding: 8px 8px 6px; font-size: 10px; color: #fff;
+}
+
+/* ── FORMS ─────────────────────────────────── */
+.community-form {
+  background: var(--panel2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 14px; margin-top: 8px;
+  display: none; flex-direction: column; gap: 10px;
+}
+.community-form.open { display: flex; }
+
+.form-field {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.form-label { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); }
+.form-input, .form-textarea {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 4px; padding: 8px 10px;
+  font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text); outline: none; transition: border-color .2s;
+  resize: none;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+.form-textarea { height: 80px; }
+
+.form-file-label {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border: 1px dashed var(--border);
+  border-radius: 4px; cursor: pointer; color: var(--text3);
+  font-size: 11px; transition: border-color .2s;
+}
+.form-file-label:hover { border-color: var(--accent); color: var(--accent); }
+.form-file-input { display: none; }
+
+.form-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.btn-cancel {
+  padding: 7px 14px; border-radius: 4px; border: 1px solid var(--border);
+  background: transparent; color: var(--text2); cursor: pointer;
+  font-size: 11px; font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.btn-submit {
+  padding: 7px 16px; border-radius: 4px; border: none;
+  background: var(--accent); color: #f5f0e6; cursor: pointer;
+  font-size: 11px; font-weight: 600; font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background .2s;
+}
+.btn-submit:hover { background: var(--accent2); }
+
+/* ── USER MAP MARKERS ──────────────────────── */
+.mk-user .mk-core {
+  background: rgba(61,107,85,.15);
+  border-color: #3d6b55;
+  color: #3d6b55;
+  font-size: 10px;
+}
+.mk-user:hover .mk-core,
+.mk-user.active .mk-core {
+  background: #3d6b55;
+  color: #f5f0e6;
+}
+
+/* ── EMPTY STATE ───────────────────────────── */
+.empty-community {
+  text-align: center; padding: 20px 0;
+  font-size: 12px; color: var(--text3);
+}
