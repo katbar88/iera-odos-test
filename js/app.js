@@ -143,14 +143,29 @@ function openStop(id) {
   document.getElementById('det-badge-txt').style.color  = routeColor;
   document.getElementById('det-title').textContent     = s[lang].title;
   document.getElementById('det-sub').textContent       = s[lang].sub;
-  // Format description — bold ΤΟ ΠΑΡΕΛΘΟΝ / ΤΟ ΠΑΡΟΝ / THE PAST / THE PRESENT
-  const rawDesc = s[lang].desc;
-  const formattedDesc = rawDesc
+
+  // Format description — with source attribution styling
+  const d = s[lang];
+  let descHtml = '';
+  if (d.source) {
+    // get the sub element color to reuse for the source label
+    const subColor = getComputedStyle(document.getElementById('det-sub')).color;
+    // strip the plain-text "Πηγή:…" line that lives in desc (everything before it)
+    const mainText = d.desc.split('\n\nΠηγή:')[0];
+    descHtml  = mainText;
+    descHtml += `<br><br><em style="color:${subColor};font-style:italic;font-size:0.88em;">Πηγή: ${d.source}</em>`;
+    if (d.desc_extra) descHtml += '<br><br>' + d.desc_extra;
+  } else {
+    descHtml = d.desc;
+  }
+  // bold section markers
+  const formattedDesc = descHtml
     .replace(/(ΤΟ ΠΑΡΕΛΘΟΝ:)/g, '<strong>$1</strong>')
-    .replace(/(ΤΟ ΠΑΡΟΝ:)/g, '<strong>$1</strong>')
-    .replace(/(THE PAST:)/g, '<strong>$1</strong>')
+    .replace(/(ΤΟ ΠΑΡΟΝ:)/g,    '<strong>$1</strong>')
+    .replace(/(THE PAST:)/g,    '<strong>$1</strong>')
     .replace(/(THE PRESENT:)/g, '<strong>$1</strong>');
   document.getElementById('det-desc').innerHTML = formattedDesc;
+
   document.getElementById('nav-pos').textContent       = `${pos} / ${ids.length}`;
   document.getElementById('btn-prev').disabled         = pos === 1;
   document.getElementById('btn-next').disabled         = pos === ids.length;
