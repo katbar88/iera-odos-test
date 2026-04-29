@@ -401,12 +401,27 @@ html, body {
 .gallery-prev { left:10px; }
 .gallery-next { right:10px; }
 .gallery-counter {
-  position:absolute; bottom:10px; left:50%; transform:translateX(-50%);
+  position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
   background:rgba(13,13,13,.8); color:var(--accent);
   font-size:9px; letter-spacing:.14em; 
   padding:3px 10px; border-radius:0; z-index:10; border:1px solid var(--border);
 }
 #gallery-img { width:100%; height:300px; object-fit:cover; display:block; filter:grayscale(15%); }
+
+/* ── GALLERY CAPTION ─────────────────── */
+.gallery-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(26,26,20,.72);
+  color: #e0c050;
+  font-size: 10px;
+  letter-spacing: .06em;
+  padding: 5px 14px;
+  text-align: right;
+  font-family: 'Corbel','Barlow',sans-serif;
+  backdrop-filter: blur(2px);
+  z-index: 10;
+}
 
 /* ── COMMUNITY BAR ───────────────────────── */
 #community-bar {
@@ -566,17 +581,3 @@ html, body {
 
 /* ── BASEMAP FILTER ─────────────────── */
 .leaflet-tile-pane { filter: brightness(0.78) contrast(1.06) saturate(0.18) grayscale(0.25) !important; }
-
-/* ── GALLERY CAPTION ─────────────────── */
-.gallery-caption {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: rgba(26,26,20,.72);
-  color: #e0c050;
-  font-size: 10px;
-  letter-spacing: .06em;
-  padding: 5px 14px;
-  text-align: right;
-  font-family: 'Corbel','Barlow',sans-serif;
-  backdrop-filter: blur(2px);
-}
