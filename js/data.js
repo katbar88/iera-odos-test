@@ -556,6 +556,7 @@ const stops = [{
     }, {
         id: 25,
         coords: [38.01187172000872, 23.608197992481898],
+        maps_url : 'https://www.google.com/maps/@38.0120097,23.6081135,3a,37.5y,350.6h,87.72t/data=!3m7!1e1!3m5!1sCJk4FzDVbYpoBCChIWaKig!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D2.280000000000001%26panoid%3DCJk4FzDVbYpoBCChIWaKig%26yaw%3D350.6!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDQyNy4wIKXMDSoASAFQAw%3D%3D',
         photos: ['assets/photos/photo_25_1.jpg', 'assets/photos/photo_25_2.jpg', 'assets/photos/photo_25_3.jpg'],
         audio: 'assets/audio/audio_25.mp3',
         audio_en: 'assets/audio/audio_25_eng.mp3',
