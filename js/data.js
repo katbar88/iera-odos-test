@@ -485,11 +485,11 @@ const stops = [{
     }, {
         id: 22,
         coords: [38.012947, 23.635965],
-        photos: ['assets/photos/photo_22_4.jpg', 'assets/photos/photo_22_1.jpg', 'assets/photos/photo_22_2.jpg', 'assets/photos/photo_22_3.jpg', 'assets/photos/photo_22_5.jpg', 'assets/photos/photo_22_6.jpg'],
+        photos: ['assets/photos/photo_22_1.jpg', 'assets/photos/photo_22_2.jpg', 'assets/photos/photo_22_3.jpg', 'assets/photos/photo_22_4.jpg', 'assets/photos/photo_22_5.jpg', 'assets/photos/photo_22_6.jpg'],
         audio: 'assets/audio/audio_21.mp3',
         audio_en: 'assets/audio/audio_21_eng.mp3',
         videos: [],
-        captions: [null, 'Αρχείο Ιγγλέση', 'Αρχείο Ιγγλέση', 'Αρχείο Ιγγλέση', null, null],
+        captions: ['Αρχείο Ιγγλέση', 'Αρχείο Ιγγλέση', 'Αρχείο Ιγγλέση', 'Δαφνί πριν το σεισμό το 1999, Φωτεινάκη', null, null],
         panorama: null,
         el: {
             title: 'Ι. Μονή Δαφνίου',
