@@ -185,6 +185,7 @@ const stops = [{
     }, {
         id: 9,
         coords: [37.98560233497558, 23.699610685050054],
+        maps_url : 'https://www.google.com/maps/place/%CE%99%CE%B5%CF%81%CE%B7+%CE%95%CE%BB%CE%B9%CE%B1/@37.9853236,23.7004578,3a,37.5y,274.91h,90.21t/data=!3m7!1e1!3m5!1sqJREcprCka3UlXCgmJs1sQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-0.20999999999999375%26panoid%3DqJREcprCka3UlXCgmJs1sQ%26yaw%3D274.91!7i16384!8i8192!4m7!3m6!1s0x14a1bcc441b4f049:0x6944ed6586312dd8!8m2!3d37.9859577!4d23.6993711!10e5!16s%2Fg%2F1tcz59qj?entry=ttu&g_ep=EgoyMDI2MDQyNy4wIKXMDSoASAFQAw%3D%3D',
         photos: ['assets/photos/photo_9_1.jpg'],
         audio: 'assets/audio/audio_9.mp3',
         audio_en: 'assets/audio/audio_9_eng.mp3',
