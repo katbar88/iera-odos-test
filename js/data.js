@@ -511,7 +511,7 @@ const stops = [{
         audio: 'assets/audio/audio_23.mp3',
         audio_en: 'assets/audio/audio_23_eng.mp3',
         videos: [],
-        captions: [null, 'Δράση Καθαρισμού του Σπηλαίου από τους Φίλους της Φύσης, Αρχείο Φωτεινάκη»],
+        captions: [null, 'Δράση Καθαρισμού του Σπηλαίου από τους Φίλους της Φύσης, Αρχείο Φωτεινάκη'],
         panorama: null,
         streetview: false,
         el: {
