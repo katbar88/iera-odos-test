@@ -265,6 +265,8 @@ function setLang(l) {
   window.lang = l;
   document.getElementById('btn-el').classList.toggle('active', l === 'el');
   document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  const btnHome = document.getElementById('btn-home');
+  if (btnHome) btnHome.textContent = l === 'en' ? '← HOME' : '← ΑΡΧΙΚΗ';
 
   // route tabs
   routes.forEach(r => {
