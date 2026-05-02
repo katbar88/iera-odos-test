@@ -11,7 +11,7 @@ let map, currentTileLayer = null, markers = [], polylines = {};
 
 function initMap() {
   map = L.map('map', { center:[38.005,23.635], zoom:12 });
-  switchMapStyle('carto');
+  switchMapStyle('topo');
   drawAllPolylines();
   createMarkers();
 }
@@ -21,7 +21,7 @@ function changeTile(style) { switchMapStyle(style); }
 
 function switchMapStyle(style) {
   if (currentTileLayer) map.removeLayer(currentTileLayer);
-  const t = tileLayers[style] || tileLayers['carto'];
+  const t = tileLayers[style] || tileLayers['topo'];
   currentTileLayer = L.tileLayer(t.url, { attribution:t.attr, subdomains:'abcd', maxZoom:19, className: t.className || '' }).addTo(map);
   currentTileLayer.bringToBack();
 }
