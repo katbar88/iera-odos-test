@@ -390,11 +390,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initMap();
   switchRoute('all');
-  setLang('el');
 
   // Auto-detect language from URL parameter
   const urlLang = new URLSearchParams(window.location.search).get('lang');
-  if (urlLang === 'en') setLang('en');
+  setLang(urlLang === 'en' ? 'en' : 'el');
 
   // Sidebar resize
   const handle = document.getElementById('sb-resize');
