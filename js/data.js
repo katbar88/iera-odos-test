@@ -74,7 +74,7 @@ const stops = [{
     }, {
         id: 4,
         coords: [37.98356276880466, 23.707420527869104],
-        maps_url:'https://www.google.com/maps/@37.9845541,23.6925459,3a,75y,263.06h,94.4t/data=!3m7!1e1!3m5!1sD0FvOUutdmxPxIjek6BG_Q!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-4.400000000000006%26panoid%3DD0FvOUutdmxPxIjek6BG_Q%26yaw%3D263.06!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDQyNy4wIKXMDSoASAFQAw%3D%3D',
+        maps_url:'google.com/maps/place/Iera+Odos+84,+Athina+104+47/@37.9825539,23.7072757,3a,75y,26.43h,91.64t/data=!3m7!1e1!3m5!1skNI_y6iZ3Rqb1WkcFuq2_A!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D-1.6380344394586217%26panoid%3DkNI_y6iZ3Rqb1WkcFuq2_A%26yaw%3D26.425895366412213!7i16384!8i8192!4m6!3m5!1s0x14a1bcdc7bc8a617:0x49bb526ed4080ce6!8m2!3d37.9827498!4d23.7073306!16s%2Fg%2F11w25xbjz8?entry=tts&g_ep=EgoyMDI2MDQyNy4wIPu8ASoASAFQAw%3D%3D&skid=befb4552-20ae-4de7-a704-ca5467f100df',
         photos: ['assets/photos/photo_4_1.jpg', 'assets/photos/photo_4_2.jpg'],
         audio: 'assets/audio/audio_4.mp3',
         audio_en: 'assets/audio/audio_4_eng.mp3',
