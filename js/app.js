@@ -150,9 +150,7 @@ function openStop(id) {
   const d = s[lang];
   let descHtml = '';
   if (d.source) {
-    // get the sub element color to reuse for the source label
     const subColor = getComputedStyle(document.getElementById('det-sub')).color;
-    // strip the plain-text "Πηγή:…" line that lives in desc (everything before it)
     const mainText = d.desc.split('\n\nΠηγή:')[0];
     descHtml  = mainText;
     descHtml += `<br><em style="color:${subColor};font-style:italic;font-size:0.88em;">${lang === 'en' ? 'Source' : 'Πηγή'}: ${d.source}</em>`;
@@ -160,7 +158,6 @@ function openStop(id) {
   } else {
     descHtml = d.desc;
   }
-  // bold section markers
   const formattedDesc = descHtml
     .replace(/(ΤΟ ΠΑΡΕΛΘΟΝ:)/g, '<strong>$1</strong>')
     .replace(/(ΤΟ ΠΑΡΟΝ:)/g,    '<strong>$1</strong>')
@@ -202,8 +199,6 @@ function galleryNav(dir) {
   if (prev) prev.style.display = idx === 0 ? 'none' : 'flex';
   if (next) next.style.display = idx === photos.length - 1 ? 'none' : 'flex';
 }
-
-
 
 function videoNav(dir) {
   const vids = window._videoList;
@@ -397,6 +392,10 @@ document.addEventListener('DOMContentLoaded', () => {
   switchRoute('all');
   setLang('el');
 
+  // Auto-detect language from URL parameter
+  const urlLang = new URLSearchParams(window.location.search).get('lang');
+  if (urlLang === 'en') setLang('en');
+
   // Sidebar resize
   const handle = document.getElementById('sb-resize');
   const sidebar = document.getElementById('sidebar');
@@ -414,7 +413,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!dragging) return;
       const newW = Math.min(500, Math.max(160, startW + e.clientX - startX));
       sidebar.style.width = newW + 'px';
-      // update community bar position
       const cb = document.getElementById('community-bar');
       const leg = document.getElementById('legend');
       if (cb) cb.style.left = (newW + 2) + 'px';
@@ -466,7 +464,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Reposition on open/close
     const origOpen = window.openStop;
     window.openStop = function(id) {
       origOpen(id);
